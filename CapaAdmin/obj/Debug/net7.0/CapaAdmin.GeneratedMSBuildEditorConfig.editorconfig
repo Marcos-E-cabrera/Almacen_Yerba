@@ -20,8 +20,20 @@ build_property._RazorSourceGeneratorDebug =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/cabre/OneDrive/Escritorio/Web_Api_Practicas/Almacen/CapaAdmin/Views/Home/Privacy.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
+[C:/Users/cabre/OneDrive/Escritorio/Web_Api_Practicas/Almacen/CapaAdmin/Views/Home/Usuarios.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxVc3Vhcmlvcy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/cabre/OneDrive/Escritorio/Web_Api_Practicas/Almacen/CapaAdmin/Views/Mantenimiento/Categorias.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWFudGVuaW1pZW50b1xDYXRlZ29yaWFzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/cabre/OneDrive/Escritorio/Web_Api_Practicas/Almacen/CapaAdmin/Views/Mantenimiento/Marcas.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWFudGVuaW1pZW50b1xNYXJjYXMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/cabre/OneDrive/Escritorio/Web_Api_Practicas/Almacen/CapaAdmin/Views/Mantenimiento/Productos.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWFudGVuaW1pZW50b1xQcm9kdWN0b3MuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/cabre/OneDrive/Escritorio/Web_Api_Practicas/Almacen/CapaAdmin/Views/Shared/Error.cshtml]
