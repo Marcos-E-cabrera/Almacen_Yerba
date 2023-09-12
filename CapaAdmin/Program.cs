@@ -1,3 +1,8 @@
+using CapaAdmin.Models.DBEntidades;
+using CapaAdmin.Models.Services;
+using Microsoft.EntityFrameworkCore;
+using static System.Runtime.InteropServices.JavaScript.JSType;
+
 namespace CapaAdmin
 {
     public class Program
@@ -8,6 +13,13 @@ namespace CapaAdmin
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+
+            builder.Services.AddDbContext <DbcarritoContext> (options =>
+            {
+                options.UseSqlServer(builder.Configuration.GetConnectionString("DbcarritoContext"));
+            });
+
+            builder.Services.AddScoped<IUsuarios, Negocio>();
 
             var app = builder.Build();
 
