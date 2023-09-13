@@ -26,11 +26,15 @@ namespace CapaAdmin.Controllers
             return View();
         }
 
-        public async Task<JsonResult> ListarUsuarios()
+        [HttpGet]
+        public async Task<IActionResult> ListarUsuarios()
         {
-            var oUsuarios =  await _context.Listar();
+            var oUsuarios = await _context.Listar();
 
-            return Json(oUsuarios);
+            // Serializa los datos y aplica formato para hacerlos legibles
+            var jsonResult = JsonConvert.SerializeObject(new { data = oUsuarios }, Formatting.Indented);
+
+            return Content(jsonResult, "application/json");
         }
     }
 }
