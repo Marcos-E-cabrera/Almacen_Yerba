@@ -16,7 +16,7 @@
     <div class="card-body">
         <div class="row">
             <div class="col-12">
-                <button type="button" class="btn btn-primary">Crear Nuevo</button>
+                <button type="button" class="btn btn-primary" onclick="AbrirModel(null)">Crear Nuevo</button>
             </div>
         </div>
 
@@ -29,6 +29,7 @@
                     <th>Apellido</th>
                     <th>Email</th>
                     <th>Activo</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -39,21 +40,58 @@
 </div>
 
 
+<!-- Modal -->
+<div class="modal fade" id="FormModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-dark text-white">
+                <h5 class="modal-title" id="exampleModalLabel">Crear Usuario</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+                <input id="txtId" type="hidden" value="0">
+
+                <div class="row">
+                    <div class="mb-3 col-sm-6">
+                        <label for="txtNombre" class="form-label">Nombre</label>
+                        <input type="text" class="form-control" id="txtNombre">
+                    </div>
+                    <div class="mb-3 col-sm-6">
+                        <label for="txtApellido" class="form-label">Apellido</label>
+                        <input type="text" class="form-control" id="txtApellido">
+                    </div>
+                    <div class="mb-3 col-sm-6">
+                        <label for="txtEmail" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="txtEmail">
+                    </div>
+                    <div class="mb-3 col-sm-6">
+                        <label for="cboActivo" class="form-label">Activo</label>
+                        <select id="cboActivo"class="form-select">
+                            <option value="1">SI</option>
+                            <option value="0">NO</option>
+                        </select>
+                    </div>
+                    
+                </div>
+                
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary" onclick="Guardar()">Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 @section scripts
 {
     <script>
-        jQuery.ajax({
-                url: '@Url.Action("ListarUsuarios", "Home")',
-                type: "GET",
-                dataType: "json",
-                contentType: "application/json; charset=utf-8",
-                success: function (data)
-                {
-                    console.log(data)
-                }
-            })
-        var tabladata = $("#tabla").DataTable({
-   
+        var tabladata;
+        var selectRow;
+        
+        tabladata = $("#tabla").DataTable({
+            responsive: true,
             "ajax": {
                 url: '@Url.Action("ListarUsuarios", "Home")',
                 type: "GET",
@@ -65,10 +103,85 @@
                 { "data": "Nombre" },
                 { "data": "Apellido" },
                 { "data": "Email" },
-                { "data": "Activo" }
-            ]
+                {
+                    "data": "Activo", "render": function (value) {
+                        if (value) {
+                            return '<span class="badge bg-success">SI</span>'
+                        } else {
+                            return '<span class="badge bg-danger">NO</span>'
+                        }
+                    }
+                },
+                {
+                    "defaultContent": '<button type="button" class="btn btn-primary btn-sm btn-editar"><i class="fas fa-pen"></i></button>' +
+                                      '<button type="button" class="btn btn-danger btn-sm ms-2"><i class="fas fa-trash"></i></button>',
+                    "orderable": false,
+                    "searchable": false,
+                    "width": "90px",
+                }
+            ],
+            "language": {
+                "url": "https://cdn.datatables.net/plug-ins/1.11.3/i18n/es_es.json"
+            },
         });
+
+        function AbrirModel(json)
+        {
+            $("#txtId").val(0);
+            $("#txtNombre").val("");
+            $("#txtApellido").val("");
+            $("#txtEmail").val("");
+            $("#cboActivo").val(1);
+
+            if( json != null )
+            {
+                $("#txtId").val(json.IdUsuario);
+                $("#txtNombre").val(json.Nombre);
+                $("#txtApellido").val(json.Apellido);
+                $("#txtEmail").val(json.Email);
+                $("#cboActivo").val(json.Activo == true ? 1 : 0);
+            }
+
+            $("#FormModal").modal("show");
+        }
+
+       
+
+        $("#tabla tbody").on("click", '.btn-editar', function () 
+        {
+            selectRow = $(this).closest("tr");
+            var data = tabladata.row(selectRow).data();
+
+            console.log(data);
+
+            AbrirModel(data);
+        })
+
+        function Guardar() 
+        {
+            var oUsuario = {
+                IdUsuario: $("#txtId").val(),
+                Activo: $("#cboActivo").val() == 1 ? true : false,
+                Nombre: $("#txtNombre").val(),
+                Apellido: $("#txtApellido").val(),
+                Email: $("#txtEmail").val(),
+            }
+
+            if (oUsuario.IdUsuario == 0) {
+                tabladata.row.add(oUsuario).draw(false);
+            }
+            else
+            {
+                tabladata.row(selectRow).data(oUsuario).draw(false);
+            }
+
+            $("#FormModal").modal("hide");
+
+        }
 
     </script>
 }
   
+
+
+
