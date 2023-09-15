@@ -1,4 +1,5 @@
 ﻿using CapaAdmin.Models;
+using CapaAdmin.Models.DBEntidades;
 using CapaAdmin.Models.Services;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -36,5 +37,26 @@ namespace CapaAdmin.Controllers
 
             return Content(jsonResult, "application/json");
         }
+
+        [HttpPost]
+        public IActionResult GuardarUsuario(Usuario objeto)
+        {
+            object resultado;
+            string mensaje = string.Empty;
+            
+            if(objeto.IdUsuario == 0) 
+            {
+                resultado = _context.Registrar(objeto, out mensaje);   
+            }
+            else 
+            {
+                resultado = _context.Editar(objeto, out mensaje);
+            }
+
+            var jsonResult = JsonConvert.SerializeObject(new { resultado = resultado,mensaje= mensaje }, Formatting.Indented);
+
+            return Content(jsonResult, "application/json");
+        }
+
     }
 }

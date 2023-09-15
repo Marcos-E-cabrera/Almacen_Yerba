@@ -50,9 +50,9 @@
             </div>
             <div class="modal-body">
 
-                <input id="txtId" type="hidden" value="0">
+                <input id="txtId" type="text" value="0">
 
-                <div class="row">
+                <div class="row g-2">
                     <div class="mb-3 col-sm-6">
                         <label for="txtNombre" class="form-label">Nombre</label>
                         <input type="text" class="form-control" id="txtNombre">
@@ -71,8 +71,15 @@
                             <option value="1">SI</option>
                             <option value="0">NO</option>
                         </select>
+                    </div>                   
+                </div>
+
+                <div class="row mt-2">
+                    <div  class="col-12">
+                        <div id="mensajeError" class="alert alert-danger" role="alert">
+                            A simple danger alert—check it out!
+                        </div>
                     </div>
-                    
                 </div>
                 
             </div>
@@ -133,6 +140,8 @@
             $("#txtEmail").val("");
             $("#cboActivo").val(1);
 
+            $("#mensajeError").hide();
+
             if( json != null )
             {
                 $("#txtId").val(json.IdUsuario);
@@ -159,23 +168,51 @@
 
         function Guardar() 
         {
-            var oUsuario = {
-                IdUsuario: $("#txtId").val(),
+            var Usuario = {
                 Activo: $("#cboActivo").val() == 1 ? true : false,
-                Nombre: $("#txtNombre").val(),
                 Apellido: $("#txtApellido").val(),
                 Email: $("#txtEmail").val(),
+                IdUsuario: $("#txtId").val(),
+                Nombre: $("#txtNombre").val(),
             }
 
-            if (oUsuario.IdUsuario == 0) {
-                tabladata.row.add(oUsuario).draw(false);
-            }
-            else
-            {
-                tabladata.row(selectRow).data(oUsuario).draw(false);
-            }
-
-            $("#FormModal").modal("hide");
+            jQuery.ajax({
+                url: '@Url.Action("GuardarUsuario", "Home")',
+                type: "POST",
+                data: Usuario, // Envía el objeto con la propiedad 'objeto'
+                dataType: "json",
+                success: function (data) {
+                    debugger;
+                    if (Usuario.IdUsuario == 0) // USUARIO NUEVO
+                    {
+                        if (data.resultado != 0) 
+                        {
+                            Usuario.IdUsuario = data.resultado;
+                            tabladata.row.add(Usuario).draw(false);
+                            $("#FormModal").modal("hide");
+                        }
+                        else {
+                            $("#mensajeError").text(data.mensaje);
+                            $("#mensajeError").show();
+                        }
+                    }
+                    else 
+                    {
+                        if (data.resultado != false) 
+                        {
+                            tabladata.row(selectRow).data(Usuario).draw(false);
+                            $("#FormModal").modal("hide");
+                        }
+                        else {
+                            $("#mensajeError").text(data.mensaje);
+                            $("#mensajeError").show();
+                        }
+                    }
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
 
         }
 
