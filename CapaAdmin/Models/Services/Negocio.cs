@@ -167,17 +167,20 @@ namespace CapaAdmin.Models.Services
 
             try
             {
-                var oUsuario =  _context.Usuarios.FirstOrDefaultAsync(x => x.IdUsuario == id);
-                if (oUsuario == null)
+                var oUsuario =  _context.Usuarios.FirstOrDefault(x => x.IdUsuario == id);
+                if (oUsuario != null)
                 {
+                    _context.Remove(oUsuario);
+                    _context.SaveChanges();
+
+                    resultado = true;           
+                }
+                else
+                { 
                     mensaje = "El objeto Usuario es nulo.";
                     return resultado;
                 }
-            
-                _context.Remove(oUsuario);
-                _context.SaveChanges();
 
-                resultado = true;
             }
             catch (Exception ex) 
             {

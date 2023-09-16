@@ -58,5 +58,20 @@ namespace CapaAdmin.Controllers
             return Content(jsonResult, "application/json");
         }
 
+        [HttpDelete]
+        public IActionResult EliminarUsuario(Usuario objeto)
+        {
+            bool resultado = false;
+            string mensaje = string.Empty;
+
+            if (objeto.IdUsuario != 0)
+            {
+                resultado = _context.Delete(objeto.IdUsuario, out mensaje);
+            }
+
+            var jsonResult = JsonConvert.SerializeObject(new { resultado = resultado, mensaje = mensaje }, Formatting.Indented);
+
+            return Content(jsonResult, "application/json");
+        }
     }
 }

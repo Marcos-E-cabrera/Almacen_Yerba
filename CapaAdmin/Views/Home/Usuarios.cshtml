@@ -55,15 +55,15 @@
                 <div class="row g-2">
                     <div class="mb-3 col-sm-6">
                         <label for="txtNombre" class="form-label">Nombre</label>
-                        <input type="text" class="form-control" id="txtNombre">
+                        <input type="text" class="form-control" id="txtNombre" autocomplete="off">
                     </div>
                     <div class="mb-3 col-sm-6">
                         <label for="txtApellido" class="form-label">Apellido</label>
-                        <input type="text" class="form-control" id="txtApellido">
+                        <input type="text" class="form-control" id="txtApellido"  autocomplete="off">
                     </div>
                     <div class="mb-3 col-sm-6">
                         <label for="txtEmail" class="form-label">Email</label>
-                        <input type="email" class="form-control" id="txtEmail">
+                        <input type="email" class="form-control" id="txtEmail" autocomplete="off">
                     </div>
                     <div class="mb-3 col-sm-6">
                         <label for="cboActivo" class="form-label">Activo</label>
@@ -104,9 +104,9 @@
                 type: "GET",
                 dataType: "json",
                 contentType: "application/json; charset=utf-8"
-            }
-            ,
-            "columns": [
+            },
+            "columns":
+            [
                 { "data": "Nombre" },
                 { "data": "Apellido" },
                 { "data": "Email" },
@@ -121,7 +121,7 @@
                 },
                 {
                     "defaultContent": '<button type="button" class="btn btn-primary btn-sm btn-editar"><i class="fas fa-pen"></i></button>' +
-                                      '<button type="button" class="btn btn-danger btn-sm ms-2"><i class="fas fa-trash"></i></button>',
+                                      '<button type="button" class="btn btn-danger btn-sm ms-2 btn-eliminar"><i class="fas fa-trash"></i></button>',
                     "orderable": false,
                     "searchable": false,
                     "width": "90px",
@@ -166,6 +166,35 @@
             AbrirModel(data);
         })
 
+        $("#tabla tbody").on("click", '.btn-eliminar', function () {
+            selectRow = $(this).closest("tr");
+            var data = tabladata.row(selectRow).data();
+
+            console.log(data);
+
+            Eliminar(data);
+        })
+
+        function Eliminar(json, selectRow) {
+            var Usuario = json;
+
+            jQuery.ajax({
+                url: '@Url.Action("EliminarUsuario", "Home")', 
+                type: "DELETE",
+                data: Usuario, 
+                dataType: "json",
+                success: function (data) {
+                    debugger;
+                    if (data.resultado != false) { 
+                        tabladata.row(selectRow).remove().draw(false); 
+                    }
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+        }
+
         function Guardar() 
         {
             var Usuario = {
@@ -182,7 +211,6 @@
                 data: Usuario, // Envía el objeto con la propiedad 'objeto'
                 dataType: "json",
                 success: function (data) {
-                    debugger;
                     if (Usuario.IdUsuario == 0) // USUARIO NUEVO
                     {
                         if (data.resultado != 0) 
@@ -196,11 +224,12 @@
                             $("#mensajeError").show();
                         }
                     }
-                    else 
+                    else // EDITAR USUARIO 
                     {
-                        if (data.resultado != false) 
+                        if (data.resultado != false)  
                         {
                             tabladata.row(selectRow).data(Usuario).draw(false);
+                            selectRow = null;
                             $("#FormModal").modal("hide");
                         }
                         else {
