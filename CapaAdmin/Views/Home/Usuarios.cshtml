@@ -180,33 +180,34 @@
                 cancelButtonText: "Cancelar",
                 closeOnConfirm: false
             },
-            function () {
-                Eliminar(data);
+            function ()
+            {
+                jQuery.ajax({
+                    url: '@Url.Action("EliminarUsuario", "Home")',
+                    type: "DELETE",
+                    data: data,
+                    dataType: "json",
+                    success: function (data)
+                    {
+                        debugger;
+                        if (data.resultado) {
+                            swal("Usuario Eliminado!", "tu usuario ha sido eliminado.", "success");
+                            tabladata.row(selectRow).remove().draw(false);
+                        }
+                        else 
+                        {
+                            swal("No se pudo eliminar!", data.mensaje, "error");
+                        }
+                    },
+                    error: function (error) 
+                    {
+                        $("#mensajeError").text("Error Ajax");
+                        $("#mensajeError").show();
+                    }
+                });
             });
         })
 
-        function Eliminar(json, selectRow) {
-            var Usuario = json;
-
-            jQuery.ajax({
-                url: '@Url.Action("EliminarUsuario", "Home")', 
-                type: "DELETE",
-                data: Usuario, 
-                dataType: "json",
-                success: function (data) 
-                {
-                    if (data.resultado != false)
-                    {
-                        swal("Usuario Eliminado!", "tu usuario ha sido eliminado.", "success");
-                        tabladata.row(selectRow).remove().draw(false); 
-                    }
-                },
-                error: function (error) {
-                    $("#mensajeError").text("Error Ajax");
-                    $("#mensajeError").show();
-                }
-            });
-        }
 
         function Guardar() 
         {
