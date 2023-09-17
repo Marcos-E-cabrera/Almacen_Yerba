@@ -20,6 +20,7 @@ namespace CapaAdmin
             });
 
             builder.Services.AddScoped<IUsuarios, Negocio>();
+            builder.Services.AddScoped<IRecursos, Recursos>();
 
             var app = builder.Build();
 

@@ -9,11 +9,14 @@ namespace CapaAdmin.Models.Services
     public class Negocio : IUsuarios
     {
         private readonly DbcarritoContext _context;
-        public Negocio(DbcarritoContext context)
+        private readonly IRecursos _recursos;
+
+        public Negocio(DbcarritoContext context, IRecursos recursos)
         {
             _context = context;
-
+            _recursos = recursos;
         }
+
 
         public async Task<IEnumerable<Usuario>> Listar()
         {
@@ -62,27 +65,41 @@ namespace CapaAdmin.Models.Services
 
             try
             {
-                var password = "test123";
-                oUsuario.Password = Validacion.GetSHA2S6(password);
+                var password = _recursos.GetPassword();
+                var subject = "Creacion de Cuenta";
+                var msjEmail = "<h3>Su cuenta fue creada correctamente</h3><br/><p>Su password para acceder es: !password!</p>";
 
-                var paramNombre = new SqlParameter("@Nombre", oUsuario.Nombre);
-                var paramApellido = new SqlParameter("@Apellido", oUsuario.Apellido);
-                var paramEmail = new SqlParameter("@Email", oUsuario.Email);
-                var paramPassword = new SqlParameter("@Password", oUsuario.Password);
-                var paramActivo = new SqlParameter("@Activo", oUsuario.Activo);
+                msjEmail = msjEmail.Replace("!password!", password);
 
-                var paramMensaje = new SqlParameter("@Mensaje", SqlDbType.NVarChar, 500);
-                paramMensaje.Direction = ParameterDirection.Output;
+                var result = _recursos.SendEmail(oUsuario.Email, subject, msjEmail);
 
-                var paramResultado = new SqlParameter("@Resultado", SqlDbType.Int);
-                paramResultado.Direction = ParameterDirection.Output;
+                if ( result )
+                {
+                    oUsuario.Password = _recursos.GetSHA2S6(password);
 
-                var query = "EXEC sp_RegistrarUsuario @Nombre, @Apellido, @Email, @Password, @Activo, @Mensaje OUTPUT, @Resultado OUTPUT";
-                _context.Database.ExecuteSqlRaw(query, paramNombre, paramApellido, paramEmail, paramPassword, paramActivo, paramMensaje, paramResultado);
+                    var paramNombre = new SqlParameter("@Nombre", oUsuario.Nombre);
+                    var paramApellido = new SqlParameter("@Apellido", oUsuario.Apellido);
+                    var paramEmail = new SqlParameter("@Email", oUsuario.Email);
+                    var paramPassword = new SqlParameter("@Password", oUsuario.Password);
+                    var paramActivo = new SqlParameter("@Activo", oUsuario.Activo);
 
-                idGenerado = (int)paramResultado.Value;
-                mensaje = paramMensaje.Value.ToString();
+                    var paramMensaje = new SqlParameter("@Mensaje", SqlDbType.NVarChar, 500);
+                    paramMensaje.Direction = ParameterDirection.Output;
 
+                    var paramResultado = new SqlParameter("@Resultado", SqlDbType.Int);
+                    paramResultado.Direction = ParameterDirection.Output;
+
+                    var query = "EXEC sp_RegistrarUsuario @Nombre, @Apellido, @Email, @Password, @Activo, @Mensaje OUTPUT, @Resultado OUTPUT";
+                    _context.Database.ExecuteSqlRaw(query, paramNombre, paramApellido, paramEmail, paramPassword, paramActivo, paramMensaje, paramResultado);
+
+                    idGenerado = (int)paramResultado.Value;
+                    mensaje = paramMensaje.Value.ToString();
+                }
+                else
+                {
+                    mensaje = "No se puedo mandar el Email";
+                    idGenerado = 0;
+                }
             }
             catch (SqlException ex)
             {
