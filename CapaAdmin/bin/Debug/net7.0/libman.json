@@ -13,6 +13,14 @@
     {
       "library": "datatables@1.10.21",
       "destination": "wwwroot/datatables/"
+    },
+    {
+      "library": "jquery-loading-overlay@2.1.7",
+      "destination": "wwwroot/jquery-loading-overlay/"
+    },
+    {
+      "library": "bootstrap-sweetalert@1.0.1",
+      "destination": "wwwroot/bootstrap-sweetalert/"
     }
   ]
 }

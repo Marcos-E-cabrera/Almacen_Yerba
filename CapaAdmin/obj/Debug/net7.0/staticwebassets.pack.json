@@ -5,6 +5,26 @@
       "PackagePath": "staticwebassets\\CapaAdmin.bundle.scp.css"
     },
     {
+      "Id": "C:\\Users\\cabre\\OneDrive\\Escritorio\\Web_Api_Practicas\\Almacen\\CapaAdmin\\wwwroot\\bootstrap-sweetalert\\sweetalert.css",
+      "PackagePath": "staticwebassets\\bootstrap-sweetalert\\sweetalert.css"
+    },
+    {
+      "Id": "C:\\Users\\cabre\\OneDrive\\Escritorio\\Web_Api_Practicas\\Almacen\\CapaAdmin\\wwwroot\\bootstrap-sweetalert\\sweetalert.js",
+      "PackagePath": "staticwebassets\\bootstrap-sweetalert\\sweetalert.js"
+    },
+    {
+      "Id": "C:\\Users\\cabre\\OneDrive\\Escritorio\\Web_Api_Practicas\\Almacen\\CapaAdmin\\wwwroot\\bootstrap-sweetalert\\sweetalert.min.css",
+      "PackagePath": "staticwebassets\\bootstrap-sweetalert\\sweetalert.min.css"
+    },
+    {
+      "Id": "C:\\Users\\cabre\\OneDrive\\Escritorio\\Web_Api_Practicas\\Almacen\\CapaAdmin\\wwwroot\\bootstrap-sweetalert\\sweetalert.min.css.map",
+      "PackagePath": "staticwebassets\\bootstrap-sweetalert\\sweetalert.min.css.map"
+    },
+    {
+      "Id": "C:\\Users\\cabre\\OneDrive\\Escritorio\\Web_Api_Practicas\\Almacen\\CapaAdmin\\wwwroot\\bootstrap-sweetalert\\sweetalert.min.js",
+      "PackagePath": "staticwebassets\\bootstrap-sweetalert\\sweetalert.min.js"
+    },
+    {
       "Id": "C:\\Users\\cabre\\OneDrive\\Escritorio\\Web_Api_Practicas\\Almacen\\CapaAdmin\\wwwroot\\css\\site.css",
       "PackagePath": "staticwebassets\\css\\site.css"
     },
@@ -347,6 +367,18 @@
     {
       "Id": "C:\\Users\\cabre\\OneDrive\\Escritorio\\Web_Api_Practicas\\Almacen\\CapaAdmin\\wwwroot\\font-awesome\\webfonts\\fa-v4compatibility.woff2",
       "PackagePath": "staticwebassets\\font-awesome\\webfonts\\fa-v4compatibility.woff2"
+    },
+    {
+      "Id": "C:\\Users\\cabre\\OneDrive\\Escritorio\\Web_Api_Practicas\\Almacen\\CapaAdmin\\wwwroot\\jquery-loading-overlay\\loadingoverlay.js",
+      "PackagePath": "staticwebassets\\jquery-loading-overlay\\loadingoverlay.js"
+    },
+    {
+      "Id": "C:\\Users\\cabre\\OneDrive\\Escritorio\\Web_Api_Practicas\\Almacen\\CapaAdmin\\wwwroot\\jquery-loading-overlay\\loadingoverlay.min.js",
+      "PackagePath": "staticwebassets\\jquery-loading-overlay\\loadingoverlay.min.js"
+    },
+    {
+      "Id": "C:\\Users\\cabre\\OneDrive\\Escritorio\\Web_Api_Practicas\\Almacen\\CapaAdmin\\wwwroot\\jquery-loading-overlay\\loadingoverlay.min.js.map",
+      "PackagePath": "staticwebassets\\jquery-loading-overlay\\loadingoverlay.min.js.map"
     },
     {
       "Id": "C:\\Users\\cabre\\OneDrive\\Escritorio\\Web_Api_Practicas\\Almacen\\CapaAdmin\\wwwroot\\js\\site.js",

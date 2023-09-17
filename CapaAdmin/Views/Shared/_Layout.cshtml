@@ -8,7 +8,11 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/AlmacenYerba.styles.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/font-awesome/css/all.css" />
-    <link rel="stylesheet" href="~/datatables/css/jquery.dataTables.min.css" />
+    <link href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" rel="stylesheet" />
+    <link href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.dataTables.min.css" rel="stylesheet" />
+
+@*     <link rel="stylesheet" href="~/datatables/css/jquery.dataTables.min.css" />
+ *@    <link rel="stylesheet" href="~/bootstrap-sweetalert/sweetalert.min.css" />
 
 </head>
 <body>
@@ -86,20 +90,17 @@
             </div>
         </div>
     </footer>
-    @*
-    <ul class="navbar-nav flex-grow-1">
-    <li class="nav-item">
-    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-    </li>
-    <li class="nav-item">
-    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-    </li>
-    </ul> *@
+    
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/scripts.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
-    <script src="~/datatables/js/jquery.dataTables.min.js"></script>
+    @* <script src="~/datatables/js/jquery.dataTables.min.js"></script> *@
+    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
+    <script src="~/jquery-loading-overlay/loadingoverlay.min.js"></script>
+    <script src="~/bootstrap-sweetalert/sweetalert.min.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
