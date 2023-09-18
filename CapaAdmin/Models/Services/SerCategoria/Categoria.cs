@@ -15,22 +15,23 @@ namespace CapaAdmin.Models.Services.SerCategoria
             _context = context;
         }
 
-        public Task<IEnumerable<DBEntidades.Categoria>> Listar()
+        public async Task<IEnumerable<DBEntidades.Categoria>> Listar()
         {
             try
             {
-                var data = await _context.Usuarios.ToListAsync();
+                var data = await _context.Categoria.ToListAsync();
                 if (data == null)
                 {
-                    return new List<Usuario>();
+                    return new List<DBEntidades.Categoria>();
                 }
                 return data;
             }
             catch
             {
-                return new List<Usuario>();
+                return new List<DBEntidades.Categoria>();
             }
         }
+        
         public int Registrar(DBEntidades.Categoria oCategoria, out string mensaje)
         {
             int idGenerado = 0;
@@ -78,6 +79,7 @@ namespace CapaAdmin.Models.Services.SerCategoria
 
             return idGenerado;
         }
+        
         public bool Editar(DBEntidades.Categoria oCategoria, out string mensaje)
         {
             bool resultado = false;
@@ -104,10 +106,10 @@ namespace CapaAdmin.Models.Services.SerCategoria
                 var paramMensaje = new SqlParameter("@Mensaje", SqlDbType.NVarChar, 500);
                 paramMensaje.Direction = ParameterDirection.Output;
 
-                var paramResultado = new SqlParameter("@Resultado", SqlDbType.Int);
+                var paramResultado = new SqlParameter("@Resultado", SqlDbType.Bit);
                 paramResultado.Direction = ParameterDirection.Output;
 
-                var query = "EXEC sp_EditarCategoria @IdUsuario, @Descripcion, @Activo, @Mensaje OUTPUT, @Resultado OUTPUT";
+                var query = "EXEC sp_EditarCategoria @IdCategoria, @Descripcion, @Activo, @Mensaje OUTPUT, @Resultado OUTPUT";
                 _context.Database.ExecuteSqlRaw(query, paramId, paramDescripcion, paramActivo, paramMensaje, paramResultado);
 
                 resultado = (bool)paramResultado.Value;
@@ -139,10 +141,10 @@ namespace CapaAdmin.Models.Services.SerCategoria
                 var paramMensaje = new SqlParameter("@Mensaje", SqlDbType.NVarChar, 500);
                 paramMensaje.Direction = ParameterDirection.Output;
 
-                var paramResultado = new SqlParameter("@Resultado", SqlDbType.Int);
+                var paramResultado = new SqlParameter("@Resultado", SqlDbType.Bit);
                 paramResultado.Direction = ParameterDirection.Output;
 
-                var query = "EXEC sp_EliminarCategoria @IdUsuario, @Mensaje OUTPUT, @Resultado OUTPUT";
+                var query = "EXEC sp_EliminarCategoria @IdCategoria, @Mensaje OUTPUT, @Resultado OUTPUT";
                 _context.Database.ExecuteSqlRaw(query, paramId, paramMensaje, paramResultado);
 
                 resultado = (bool)paramResultado.Value;
