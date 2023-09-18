@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal;
 using System.Data;
 
-namespace CapaAdmin.Models.Services
+namespace CapaAdmin.Models.Services.SerUsuarios
 {
     public class Negocio : IUsuarios
     {
@@ -23,7 +23,7 @@ namespace CapaAdmin.Models.Services
             try
             {
                 var data = await _context.Usuarios.ToListAsync();
-                if ( data == null)
+                if (data == null)
                 {
                     return new List<Usuario>();
                 }
@@ -73,7 +73,7 @@ namespace CapaAdmin.Models.Services
 
                 var result = _recursos.SendEmail(oUsuario.Email, subject, msjEmail);
 
-                if ( result )
+                if (result)
                 {
                     oUsuario.Password = _recursos.GetSHA2S6(password);
 
@@ -184,22 +184,22 @@ namespace CapaAdmin.Models.Services
 
             try
             {
-                var oUsuario =  _context.Usuarios.FirstOrDefault(x => x.IdUsuario == id);
+                var oUsuario = _context.Usuarios.FirstOrDefault(x => x.IdUsuario == id);
                 if (oUsuario != null)
                 {
                     _context.Remove(oUsuario);
                     _context.SaveChanges();
 
-                    resultado = true;           
+                    resultado = true;
                 }
                 else
-                { 
+                {
                     mensaje = "El objeto Usuario es nulo.";
                     return resultado;
                 }
 
             }
-            catch (Exception ex) 
+            catch (Exception ex)
             {
                 mensaje = ex.Message;
                 resultado = false;

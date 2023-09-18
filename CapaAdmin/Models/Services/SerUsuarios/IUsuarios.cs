@@ -1,6 +1,6 @@
 ﻿using CapaAdmin.Models.DBEntidades;
 
-namespace CapaAdmin.Models.Services
+namespace CapaAdmin.Models.Services.SerUsuarios
 {
     public interface IUsuarios
     {

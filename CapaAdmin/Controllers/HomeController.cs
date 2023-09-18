@@ -1,6 +1,6 @@
 ﻿using CapaAdmin.Models;
 using CapaAdmin.Models.DBEntidades;
-using CapaAdmin.Models.Services;
+using CapaAdmin.Models.Services.SerUsuarios;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Diagnostics;
