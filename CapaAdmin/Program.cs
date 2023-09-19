@@ -1,6 +1,7 @@
 using CapaAdmin.Models.DBEntidades;
 using CapaAdmin.Models.Services;
 using CapaAdmin.Models.Services.SerCategoria;
+using CapaAdmin.Models.Services.SerMarca;
 using CapaAdmin.Models.Services.SerUsuarios;
 using Microsoft.EntityFrameworkCore;
 using static System.Runtime.InteropServices.JavaScript.JSType;
@@ -24,6 +25,8 @@ namespace CapaAdmin
             builder.Services.AddScoped<IUsuarios, Negocio>();
             builder.Services.AddScoped<IRecursos, Recursos>();
             builder.Services.AddScoped<ICategoria, Models.Services.SerCategoria.Categoria>();
+            builder.Services.AddScoped<IMarcas, Models.Services.SerMarca.Marcas>();
+
 
             var app = builder.Build();
 

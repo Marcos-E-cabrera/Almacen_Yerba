@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "KOSsB2z53RbO+FO69RFeotamFbUF2pjwHSxqckIZAxUFRMuJOlXeAcIKpyBe8wSDbiajbi3q4al23UxItrUOLQ==",
+  "dgSpecHash": "Jctl8RlN6i9GbnYcrIhdK9J+HNOB+0QDQkUzmxLBe2G3QhGh0Om1KtwZJ1MPLL+B5l5xrw1Noz1azKqDT3cZ+Q==",
   "success": true,
   "projectFilePath": "C:\\Users\\cabre\\OneDrive\\Escritorio\\Web_Api_Practicas\\Almacen\\CapaAdmin\\CapaAdmin.csproj",
   "expectedPackageFiles": [
@@ -56,8 +56,6 @@
     "C:\\Users\\cabre\\.nuget\\packages\\humanizer.core.zh-cn\\2.14.1\\humanizer.core.zh-cn.2.14.1.nupkg.sha512",
     "C:\\Users\\cabre\\.nuget\\packages\\humanizer.core.zh-hans\\2.14.1\\humanizer.core.zh-hans.2.14.1.nupkg.sha512",
     "C:\\Users\\cabre\\.nuget\\packages\\humanizer.core.zh-hant\\2.14.1\\humanizer.core.zh-hant.2.14.1.nupkg.sha512",
-    "C:\\Users\\cabre\\.nuget\\packages\\jquery\\1.7.0\\jquery.1.7.0.nupkg.sha512",
-    "C:\\Users\\cabre\\.nuget\\packages\\jquery.datatables\\1.10.15\\jquery.datatables.1.10.15.nupkg.sha512",
     "C:\\Users\\cabre\\.nuget\\packages\\microsoft.aspnetcore.razor.language\\6.0.11\\microsoft.aspnetcore.razor.language.6.0.11.nupkg.sha512",
     "C:\\Users\\cabre\\.nuget\\packages\\microsoft.bcl.asyncinterfaces\\6.0.0\\microsoft.bcl.asyncinterfaces.6.0.0.nupkg.sha512",
     "C:\\Users\\cabre\\.nuget\\packages\\microsoft.build\\17.3.2\\microsoft.build.17.3.2.nupkg.sha512",
