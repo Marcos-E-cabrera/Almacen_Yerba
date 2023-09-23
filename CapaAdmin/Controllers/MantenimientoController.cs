@@ -1,8 +1,10 @@
 ﻿using CapaAdmin.Models.DBEntidades;
 using CapaAdmin.Models.Services.SerCategoria;
 using CapaAdmin.Models.Services.SerMarca;
+using CapaAdmin.Models.Services.SerProductos;
 using CapaAdmin.Models.Services.SerUsuarios;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 
 namespace CapaAdmin.Controllers
@@ -11,11 +13,13 @@ namespace CapaAdmin.Controllers
     {
         private readonly ICategoria _contextCategoria;
         private readonly IMarcas _contextMarcas;
+        private readonly IProductos _contextProducto;
 
-        public MantenimientoController(ICategoria contextCategoria, IMarcas contextMarcas)
+        public MantenimientoController(ICategoria contextCategoria, IMarcas contextMarcas, IProductos contextProducto)
         {
             _contextCategoria = contextCategoria;
             _contextMarcas = contextMarcas;
+            _contextProducto = contextProducto;
         }
 
         public IActionResult Categorias()
@@ -23,6 +27,7 @@ namespace CapaAdmin.Controllers
             return View();
         }
 
+        #region METODOS CATEGORIA
         [HttpGet]
         public async Task<IActionResult> ListarCategoria()
         {
@@ -69,12 +74,14 @@ namespace CapaAdmin.Controllers
 
             return Content(jsonResult, "application/json");
         }
+        #endregion
 
         public IActionResult Marcas()
         {
             return View();
         }
 
+        #region METODOS MARCAS
         [HttpGet]
         public async Task<IActionResult> ListarMarcas()
         {
@@ -121,10 +128,37 @@ namespace CapaAdmin.Controllers
 
             return Content(jsonResult, "application/json");
         }
+        #endregion
 
         public IActionResult Productos()
         {
             return View();
         }
+
+        
+        [HttpGet]
+        public async Task<IActionResult> ListarProductos()
+        {
+            var oProducto = await _contextProducto.Listar();
+
+
+            var productoData = oProducto.Select(p => new
+            {
+                Nombre = p.Nombre,
+                Descripcion = p.Descripcion,
+                MarcaDescripcion = p.IdMarcaNavigation != null // Verifica si IdMarcaNavigation no es nulo
+                                 ? p.IdMarcaNavigation.Descripcion // Si no es nulo, asigna la Descripcion de IdMarcaNavigation a MarcaDescripcion
+                                 : null, // Si es nulo, asigna null a MarcaDescripcion
+                CategoriaDescripcion = p.IdCategoriaNavigation != null ? p.IdCategoriaNavigation.Descripcion : null,
+                Activo = p.Activo
+            });
+
+            var jsonResult = JsonConvert.SerializeObject(new { data = productoData }, Formatting.Indented);
+
+            return Content(jsonResult, "application/json");
+        }
+
+
+
     }
 }

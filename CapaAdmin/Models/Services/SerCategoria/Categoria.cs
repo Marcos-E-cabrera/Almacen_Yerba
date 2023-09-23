@@ -28,11 +28,11 @@ namespace CapaAdmin.Models.Services.SerCategoria
             }
             catch
             {
-                return new List<DBEntidades.Categoria>();
+                return new List<Models.DBEntidades.Categoria>();
             }
         }
         
-        public int Registrar(DBEntidades.Categoria oCategoria, out string mensaje)
+        public int Registrar(Models.DBEntidades.Categoria oCategoria, out string? mensaje)
         {
             int idGenerado = 0;
             mensaje = string.Empty;

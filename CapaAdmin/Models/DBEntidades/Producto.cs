@@ -15,10 +15,6 @@ public partial class Producto
 
     public int? IdCategoria { get; set; }
 
-    public decimal? Precio { get; set; }
-
-    public int? Stock { get; set; }
-
     public string? RutaImage { get; set; }
 
     public string? NombreImagen { get; set; }
@@ -27,11 +23,9 @@ public partial class Producto
 
     public DateTime? FechaRegistro { get; set; }
 
-    public virtual ICollection<Carrito> Carritos { get; set; } = new List<Carrito>();
-
-    public virtual ICollection<DetalleVenta> DetalleVenta { get; set; } = new List<DetalleVenta>();
-
     public virtual Categoria? IdCategoriaNavigation { get; set; }
 
     public virtual Marca? IdMarcaNavigation { get; set; }
+
+    public virtual ICollection<VarianteProducto> VarianteProductos { get; set; } = new List<VarianteProducto>();
 }

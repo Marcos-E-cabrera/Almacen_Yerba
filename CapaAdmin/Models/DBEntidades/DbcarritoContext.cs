@@ -29,6 +29,8 @@ public partial class DbcarritoContext : DbContext
 
     public virtual DbSet<Usuario> Usuarios { get; set; }
 
+    public virtual DbSet<VarianteProducto> VarianteProductos { get; set; }
+
     public virtual DbSet<Venta> Venta { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -46,8 +48,8 @@ public partial class DbcarritoContext : DbContext
                 .HasForeignKey(d => d.IdCliente)
                 .HasConstraintName("FK__Carrito__IdClien__36B12243");
 
-            entity.HasOne(d => d.IdProductoNavigation).WithMany(p => p.Carritos)
-                .HasForeignKey(d => d.IdProducto)
+            entity.HasOne(d => d.IdVarianteNavigation).WithMany(p => p.Carritos)
+                .HasForeignKey(d => d.IdVariante)
                 .HasConstraintName("FK__Carrito__IdProdu__37A5467C");
         });
 
@@ -96,8 +98,8 @@ public partial class DbcarritoContext : DbContext
 
             entity.Property(e => e.Total).HasColumnType("decimal(10, 2)");
 
-            entity.HasOne(d => d.IdProductoNavigation).WithMany(p => p.DetalleVenta)
-                .HasForeignKey(d => d.IdProducto)
+            entity.HasOne(d => d.IdVarianteNavigation).WithMany(p => p.DetalleVenta)
+                .HasForeignKey(d => d.IdVariante)
                 .HasConstraintName("FK__Detalle_V__IdPro__3F466844");
 
             entity.HasOne(d => d.IdVentaNavigation).WithMany(p => p.DetalleVenta)
@@ -139,16 +141,15 @@ public partial class DbcarritoContext : DbContext
             entity.Property(e => e.NombreImagen)
                 .HasMaxLength(100)
                 .IsUnicode(false);
-            entity.Property(e => e.Precio)
-                .HasDefaultValueSql("((0))")
-                .HasColumnType("decimal(10, 2)");
             entity.Property(e => e.RutaImage)
-                .HasMaxLength(100)
+                .HasMaxLength(200)
                 .IsUnicode(false);
+
 
             entity.HasOne(d => d.IdCategoriaNavigation).WithMany(p => p.Productos)
                 .HasForeignKey(d => d.IdCategoria)
                 .HasConstraintName("FK__Producto__IdCate__2D27B809");
+
 
             entity.HasOne(d => d.IdMarcaNavigation).WithMany(p => p.Productos)
                 .HasForeignKey(d => d.IdMarca)
@@ -178,6 +179,27 @@ public partial class DbcarritoContext : DbContext
                 .HasMaxLength(150)
                 .IsUnicode(false);
             entity.Property(e => e.Reestablecer).HasDefaultValueSql("((1))");
+        });
+
+        modelBuilder.Entity<VarianteProducto>(entity =>
+        {
+            entity.HasKey(e => e.IdVariante).HasName("PK__Variante__4ACF8F0F2E4F4D6E");
+
+            entity.ToTable("Variante_Producto");
+
+            entity.Property(e => e.Activo).HasDefaultValueSql("((1))");
+            entity.Property(e => e.FechaRegistro)
+                .HasDefaultValueSql("(getdate())")
+                .HasColumnType("datetime");
+            entity.Property(e => e.Gramos).HasDefaultValueSql("((0))");
+            entity.Property(e => e.Precio)
+                .HasDefaultValueSql("((0))")
+                .HasColumnType("decimal(10, 2)");
+            entity.Property(e => e.Stock).HasDefaultValueSql("((0))");
+
+            entity.HasOne(d => d.IdProductoNavigation).WithMany(p => p.VarianteProductos)
+                .HasForeignKey(d => d.IdProducto)
+                .HasConstraintName("FK__Variante___IdPro__628FA481");
         });
 
         modelBuilder.Entity<Venta>(entity =>
