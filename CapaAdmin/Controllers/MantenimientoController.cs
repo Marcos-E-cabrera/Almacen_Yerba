@@ -3,6 +3,7 @@ using CapaAdmin.Models.Services.SerCategoria;
 using CapaAdmin.Models.Services.SerMarca;
 using CapaAdmin.Models.Services.SerProductos;
 using CapaAdmin.Models.Services.SerUsuarios;
+using CapaAdmin.Models.Services.SerVarianteProducto;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
@@ -14,12 +15,14 @@ namespace CapaAdmin.Controllers
         private readonly ICategoria _contextCategoria;
         private readonly IMarcas _contextMarcas;
         private readonly IProductos _contextProducto;
+        private readonly IVarianteProducto _contextVarianteProducto;
 
-        public MantenimientoController(ICategoria contextCategoria, IMarcas contextMarcas, IProductos contextProducto)
+        public MantenimientoController(ICategoria contextCategoria, IMarcas contextMarcas, IProductos contextProducto, IVarianteProducto contextVarianteProducto = null)
         {
             _contextCategoria = contextCategoria;
             _contextMarcas = contextMarcas;
             _contextProducto = contextProducto;
+            _contextVarianteProducto = contextVarianteProducto;
         }
 
         public IActionResult Categorias()
@@ -158,7 +161,27 @@ namespace CapaAdmin.Controllers
             return Content(jsonResult, "application/json");
         }
 
+        public IActionResult Variantes()
+        {
+            return View();
+        }
 
+        [HttpGet]
+        public async Task<IActionResult> ListarVarianteProducto()
+        {
+            var oVarianteProducto = await _contextVarianteProducto.Listar();
+            var VarianteProductoData = oVarianteProducto.Select(p => new
+            {
+                Producto = p.IdProductoNavigation != null ? p.IdProductoNavigation.Nombre:null,
+                Gramos = p.Gramos,
+                Precio = p.Precio,
+                Stock = p.Stock,
+                Activo = p.Activo,
+            });
+            var jsonResult = JsonConvert.SerializeObject(new { data = VarianteProductoData }, Formatting.Indented);
+
+            return Content(jsonResult, "application/json");
+        }
 
     }
 }

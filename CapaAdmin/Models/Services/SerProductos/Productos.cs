@@ -36,5 +36,6 @@ namespace CapaAdmin.Models.Services.SerProductos
                 return new List<Producto>();
             }
         }
+   
     }
 }

@@ -86,8 +86,9 @@
 </div>
 
 @section scripts
-    {
+{
     <script>
+
         var tabladata;
         var selectRow;
 
@@ -99,47 +100,29 @@
                 contentType: "application/json; charset=utf-8"
             },
             "columns":
-                [
-                    { "data": "Descripcion" },
-                    {
-                        "data": "Activo", "render": function (value) {
-                            if (value) {
-                                return '<span class="badge bg-success">SI</span>'
-                            } else {
-                                return '<span class="badge bg-danger">NO</span>'
-                            }
+            [
+                { "data": "Descripcion" },
+                {
+                    "data": "Activo", "render": function (value) {
+                        if (value) {
+                            return '<span class="badge bg-success">SI</span>'
+                        } else {
+                            return '<span class="badge bg-danger">NO</span>'
                         }
-                    },
-                    {
-                        "defaultContent": '<button type="button" class="btn btn-primary btn-sm btn-editar"><i class="fas fa-pen"></i></button>' +
-                            '<button type="button" class="btn btn-danger btn-sm ms-2 btn-eliminar"><i class="fas fa-trash"></i></button>',
-                        "orderable": false,
-                        "searchable": false,
-                        "width": "90px",
                     }
-                ],
+                },
+                {
+                    "defaultContent": '<button type="button" class="btn btn-primary btn-sm btn-editar"><i class="fas fa-pen"></i></button>' +
+                        '<button type="button" class="btn btn-danger btn-sm ms-2 btn-eliminar"><i class="fas fa-trash"></i></button>',
+                    "orderable": false,
+                    "searchable": false,
+                    "width": "90px",
+                }
+            ],
             "language": {
                 "url": "https://cdn.datatables.net/plug-ins/1.11.3/i18n/es_es.json"
             },
         });
-
-        function AbrirModel(json) {
-            $("#txtId").val(0);
-            $("#txtDescripcion").val("");
-            $("#cboActivo").val(1);
-
-            $("#mensajeError").hide();
-
-            if (json != null) {
-                $("#txtId").val(json.IdMarca);
-                $("#txtDescripcion").val(json.Descripcion);
-                $("#cboActivo").val(json.Activo == true ? 1 : 0);
-            }
-
-            $("#FormModal").modal("show");
-        }
-
-
 
         $("#tabla tbody").on("click", '.btn-editar', function () {
             selectRow = $(this).closest("tr");
@@ -185,6 +168,21 @@
                 });
         })
 
+        function AbrirModel(json) {
+            $("#txtId").val(0);
+            $("#txtDescripcion").val("");
+            $("#cboActivo").val(1);
+
+            $("#mensajeError").hide();
+
+            if (json != null) {
+                $("#txtId").val(json.IdMarca);
+                $("#txtDescripcion").val(json.Descripcion);
+                $("#cboActivo").val(json.Activo == true ? 1 : 0);
+            }
+
+            $("#FormModal").modal("show");
+        }
 
         function Guardar() {
             var Marca = {
@@ -242,9 +240,6 @@
             });
 
         }
-
-
-
 
     </script>
 }
