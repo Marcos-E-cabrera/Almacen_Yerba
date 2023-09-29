@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "N2a/6x2mWAZI5EggRV2NY3/Vt7uSWpLsD7d1LD74+f0=",
+  "Hash": "AkWeQkmAObAhTEl5hQkH6KCvsVenhyl04ayJyDwFsBo=",
   "Source": "CapaAdmin",
   "BasePath": "_content/CapaAdmin",
   "Mode": "Default",
@@ -1953,6 +1953,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\lib\\jquery-validation-unobtrusive\\LICENSE.txt"
+    },
+    {
+      "Identity": "C:\\Users\\cabre\\OneDrive\\Escritorio\\Web_Api_Practicas\\Almacen\\CapaAdmin\\wwwroot\\upload\\1.jpg",
+      "SourceId": "CapaAdmin",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\cabre\\OneDrive\\Escritorio\\Web_Api_Practicas\\Almacen\\CapaAdmin\\wwwroot\\",
+      "BasePath": "_content/CapaAdmin",
+      "RelativePath": "upload/1.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\upload\\1.jpg"
     }
   ]
 }

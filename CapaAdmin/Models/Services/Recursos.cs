@@ -3,6 +3,7 @@ using System.Net.Mail;
 using System.Runtime.InteropServices.JavaScript;
 using System.Security.Cryptography;
 using System.Text;
+using System.IO;
 
 namespace CapaAdmin.Models.Services
 {
@@ -58,6 +59,30 @@ namespace CapaAdmin.Models.Services
 
             return result;
         }
-        
+
+        public static string ConvertirBase64(string ruta, out bool conversion)
+        {
+            string textBase64 = string.Empty;
+            conversion = true;
+            try
+            {
+                if (File.Exists(ruta))
+                {
+                    // El archivo existe, procede a leerlo y convertirlo a Base64.
+                    byte[] bytes = File.ReadAllBytes(ruta);
+                    textBase64 = Convert.ToBase64String(bytes);
+                }
+                else
+                {
+                    // El archivo no existe, puedes establecer la variable 'conversion' en false o manejar el error de acuerdo a tus necesidades.
+                    conversion = false;
+                }
+            }
+            catch
+            {
+                conversion = false;
+            }
+            return textBase64;
+        }
     }
 }
