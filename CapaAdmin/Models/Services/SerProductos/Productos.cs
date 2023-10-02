@@ -90,7 +90,7 @@ namespace CapaAdmin.Models.Services.SerProductos
 
             try
             {
-                var paramId = new SqlParameter("@IdMarca", id);
+                var paramId = new SqlParameter("@IdProducto", id);
 
                 var paramMensaje = new SqlParameter("@Mensaje", SqlDbType.NVarChar, 500);
                 paramMensaje.Direction = ParameterDirection.Output;
@@ -98,7 +98,7 @@ namespace CapaAdmin.Models.Services.SerProductos
                 var paramResultado = new SqlParameter("@Resultado", SqlDbType.Bit);
                 paramResultado.Direction = ParameterDirection.Output;
 
-                var query = "EXEC sp_EliminarProducto @IdMarca, @Mensaje OUTPUT, @Resultado OUTPUT";
+                var query = "EXEC sp_EliminarProducto @IdProducto, @Mensaje OUTPUT, @Resultado OUTPUT";
                 _context.Database.ExecuteSqlRaw(query, paramId, paramMensaje, paramResultado);
 
                 resultado = (bool)paramResultado.Value;
@@ -175,12 +175,12 @@ namespace CapaAdmin.Models.Services.SerProductos
                 mensaje = "La Descripcion del producto es obligatorio.";
                 return resultado;
             }
-            else if (oProducto.IdMarcaNavigation.IdMarca == 0)
+            else if (oProducto.IdMarca == 0)
             {
                 mensaje = "La Marca del producto es obligatorio.";
                 return resultado;
             }
-            else if (oProducto.IdCategoriaNavigation.IdCategoria == 0)
+            else if (oProducto.IdCategoria == 0)
             {
                 mensaje = "La Categoria del producto es obligatorio.";
                 return resultado;
@@ -190,10 +190,10 @@ namespace CapaAdmin.Models.Services.SerProductos
             try
             {
                 var paramId = new SqlParameter("@IdProducto", oProducto.IdProducto);
-                var paramNombre = new SqlParameter("@Nombre", oProducto.Descripcion);
+                var paramNombre = new SqlParameter("@Nombre", oProducto.Nombre);
                 var paramDescripcion = new SqlParameter("@Descripcion", oProducto.Descripcion);
-                var paramIdMarca = new SqlParameter("@IdMarca", oProducto.Descripcion);
-                var paramIdCategoria = new SqlParameter("@IdCategoria", oProducto.Descripcion);
+                var paramIdMarca = new SqlParameter("@IdMarca", oProducto.IdMarca);
+                var paramIdCategoria = new SqlParameter("@IdCategoria", oProducto.IdCategoria);
                 var paramActivo = new SqlParameter("@Activo", oProducto.Activo);
 
                 var paramMensaje = new SqlParameter("@Mensaje", SqlDbType.NVarChar, 500);
@@ -202,8 +202,8 @@ namespace CapaAdmin.Models.Services.SerProductos
                 var paramResultado = new SqlParameter("@Resultado", SqlDbType.Bit);
                 paramResultado.Direction = ParameterDirection.Output;
 
-                var query = "EXEC sp_EditarProducto @IdProducto, @Descripcion, @IdMarca, @IdCategoria, @Activo, @Mensaje OUTPUT, @Resultado OUTPUT";
-                _context.Database.ExecuteSqlRaw(query, paramId, paramDescripcion, paramIdMarca, paramIdCategoria, paramActivo, paramMensaje, paramResultado);
+                var query = "EXEC sp_ModificarProducto @IdProducto, @Nombre, @Descripcion, @IdMarca, @IdCategoria, @Activo, @Mensaje OUTPUT, @Resultado OUTPUT";
+                _context.Database.ExecuteSqlRaw(query, paramId, paramNombre, paramDescripcion, paramIdMarca, paramIdCategoria, paramActivo, paramMensaje, paramResultado);
 
                 resultado = (bool)paramResultado.Value;
                 mensaje = paramMensaje.Value.ToString();

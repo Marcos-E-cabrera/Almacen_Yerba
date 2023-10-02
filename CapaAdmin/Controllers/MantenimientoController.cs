@@ -12,13 +12,12 @@ using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using NuGet.Packaging.Signing;
 using NuGet.Protocol;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace CapaAdmin.Controllers
 {
     public class MantenimientoController : Controller
     {
-
-
         #region SERVICES 
         private readonly IConfiguration _configuration;
         private readonly ICategoria _contextCategoria;
@@ -46,6 +45,8 @@ namespace CapaAdmin.Controllers
         }
 
         #region METODOS CATEGORIA
+
+        #region LISTAR
         [HttpGet]
         public async Task<IActionResult> ListarCategoria()
         {
@@ -56,7 +57,9 @@ namespace CapaAdmin.Controllers
 
             return Content(jsonResult, "application/json");
         }
+        #endregion
 
+        #region GUARDAR
         [HttpPost]
         public IActionResult GuardarCategoria(Models.DBEntidades.Categoria objeto)
         {
@@ -76,7 +79,9 @@ namespace CapaAdmin.Controllers
 
             return Content(jsonResult, "application/json");
         }
+        #endregion
 
+        #region ELIMINAR 
         [HttpDelete]
         public IActionResult EliminarCategoria(Models.DBEntidades.Categoria objeto)
         {
@@ -94,6 +99,8 @@ namespace CapaAdmin.Controllers
         }
         #endregion
 
+        #endregion
+
         // ---------------------------- MARCAS ----------------------------
 
         public IActionResult Marcas()
@@ -102,6 +109,8 @@ namespace CapaAdmin.Controllers
         }
 
         #region METODOS MARCAS
+
+        #region LISTAR
         [HttpGet]
         public async Task<IActionResult> ListarMarcas()
         {
@@ -112,7 +121,9 @@ namespace CapaAdmin.Controllers
 
             return Content(jsonResult, "application/json");
         }
+        #endregion
 
+        #region  GUARDAR
         [HttpPost]
         public IActionResult GuardarMarca(Models.DBEntidades.Marca objeto)
         {
@@ -132,7 +143,9 @@ namespace CapaAdmin.Controllers
 
             return Content(jsonResult, "application/json");
         }
+        #endregion
 
+        #region ELIMINAR
         [HttpDelete]
         public IActionResult EliminarMarca(Models.DBEntidades.Marca objeto)
         {
@@ -150,6 +163,8 @@ namespace CapaAdmin.Controllers
         }
         #endregion
 
+        #endregion
+
         // ---------------------------- PRODUCTOS ----------------------------
 
         public IActionResult Productos()
@@ -159,6 +174,7 @@ namespace CapaAdmin.Controllers
 
         #region METODOS PRODUCTO
 
+        #region LISTAR
         [HttpGet]
         public async Task<IActionResult> ListarProductos()
         {
@@ -185,7 +201,9 @@ namespace CapaAdmin.Controllers
 
             return Content(jsonResult, "application/json");
         }
+        #endregion
 
+        #region GUARDAR
         [HttpPost]
         public async Task<IActionResult> GuardarProducto(Producto oProducto, IFormFile formFile)
         {
@@ -249,8 +267,9 @@ namespace CapaAdmin.Controllers
 
             return Content(jsonResult, "application/json");
         }
+        #endregion
 
-
+        #region IMAGEN
         [HttpPost]
         public async Task<IActionResult> ImagenProducto(int id)
         {
@@ -267,6 +286,25 @@ namespace CapaAdmin.Controllers
 
             return Content(jsonResult, "application/json");
         }
+        #endregion
+
+        #region ELIMINAR 
+        [HttpDelete]
+        public IActionResult EliminarProducto(Producto objeto)
+        {
+            bool resultado = false;
+            string mensaje = string.Empty;
+
+            if (objeto.IdProducto != 0)
+            {
+                resultado = _contextProducto.Delete(objeto.IdProducto, out mensaje);
+            }
+
+            var jsonResult = JsonConvert.SerializeObject(new { resultado = resultado, mensaje = mensaje }, Formatting.Indented);
+
+            return Content(jsonResult, "application/json");
+        }
+        #endregion
 
         #endregion
 
@@ -291,6 +329,24 @@ namespace CapaAdmin.Controllers
                 Stock = p.Stock,
                 Activo = p.Activo,
             });
+            var jsonResult = JsonConvert.SerializeObject(new { data = VarianteProductoData }, Formatting.Indented);
+
+            return Content(jsonResult, "application/json");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ListarVarianteProductoById(Producto data)
+        {
+            var oVarianteProducto = await _contextVarianteProducto.ListarById(data.IdProducto);
+            var VarianteProductoData = oVarianteProducto.Select(p => new
+            {
+                Producto = p.IdProductoNavigation != null ? p.IdProductoNavigation.Nombre : null,
+                Gramos = p.Gramos,
+                Precio = p.Precio,
+                Stock = p.Stock,
+                Activo = p.Activo,
+            });
+
             var jsonResult = JsonConvert.SerializeObject(new { data = VarianteProductoData }, Formatting.Indented);
 
             return Content(jsonResult, "application/json");

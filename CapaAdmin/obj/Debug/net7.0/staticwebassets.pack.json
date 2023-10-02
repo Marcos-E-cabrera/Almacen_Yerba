@@ -453,10 +453,6 @@
       "PackagePath": "staticwebassets\\lib\\jquery\\dist\\jquery.min.map"
     },
     {
-      "Id": "C:\\Users\\cabre\\OneDrive\\Escritorio\\Web_Api_Practicas\\Almacen\\CapaAdmin\\wwwroot\\upload\\1.jpg",
-      "PackagePath": "staticwebassets\\upload\\1.jpg"
-    },
-    {
       "Id": "obj\\Debug\\net7.0\\staticwebassets\\msbuild.CapaAdmin.Microsoft.AspNetCore.StaticWebAssets.props",
       "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
     },

@@ -9,6 +9,7 @@
     <li class="breadcrumb-item active">Productos</li>
 </ol>
 
+<!-- CARD -->
 <div class="card">
 
     <div class="card-header">
@@ -42,7 +43,43 @@
     </div>
 </div>
 
-<!-- Modal -->
+<br />
+
+<!-- CARD VARIANTE DE PRODUCTOS -->
+<div class="card" id="CardVariantes">
+
+    <div class="card-header">
+        <i class="fas fa-boxes me-1"></i>Lista de Variantes
+    </div>
+
+    <div class="card-body">
+
+        <div class="row">
+            <div class="col-12">
+                <button type="button" class="btn btn-primary" onclick="AbrirModel(null)" > Crear Nuevo </button>
+            </div>
+        </div>
+
+        <hr />
+
+        <table id="tablaVariante" class="table table-bordered display" style="width:100%">
+            <thead>
+                <tr>
+                    <th>Producto</th>
+                    <th>Gramos</th>
+                    <th>Precio</th>
+                    <th>Stock</th>
+                    <th>Activo</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- MODAL -->
 <div class="modal fade" id="FormModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -118,13 +155,18 @@
     </div>
 </div> 
 
+<!-- MODAL VAARIANTE -->
+
 @section scripts 
 {
      <script>
 
         var tabladata;
+        var tablaVariantedata;
+
         var selectRow;
 
+        // --------------------------------------- CREACION DE DATATABLE DE LISTAR PRODUCTOS
         tabladata = $("#tabla").DataTable({
             "ajax": {
                 url: '@Url.Action("ListarProductos", "Mantenimiento")',
@@ -149,7 +191,8 @@
                 },
                 {
                     "defaultContent":
-                    '<button type="button" class="btn btn-primary btn-sm btn-editar"><i class="fas fa-pen"></i></button>' +
+                    '<button type="button" class="btn btn-success btn-sm ms btn-varianteProducto"><i class="fas fa-boxes"></i></button>'+
+                    '<button type="button" class="btn btn-primary btn-sm ms-2 btn-editar"><i class="fas fa-pen"></i></button>' +
                     '<button type="button" class="btn btn-danger btn-sm ms-2 btn-eliminar"><i class="fas fa-trash"></i></button>',
                     "orderable": false,
                     "searchable": false,
@@ -161,6 +204,7 @@
             }
         });
 
+        // --------------------------------------- MODAL PARA MOSTRAR INFORMACION
         function AbrirModel(json) 
         {
             $("#txtId").val(0);
@@ -204,6 +248,7 @@
             $("#FormModal").modal("show");
         }
         
+        // INFO MARCAS
         jQuery.ajax({
             url: '@Url.Action("ListarMarcas","Mantenimiento")',
             type: "GET",
@@ -224,6 +269,7 @@
             }
         })
 
+        // INFO CATEGORIA
         jQuery.ajax({
             url: '@Url.Action("ListarCategoria","Mantenimiento")',
             type: "GET",
@@ -242,7 +288,9 @@
             }
         })
 
-        function MostrarImagen(input) {
+        // --------------------------------------- MOSTRAR IMAGEN EN EL MODAL
+        function MostrarImagen(input) 
+        {
             if (input.files)
             {
                 var reader = new FileReader();
@@ -255,16 +303,128 @@
             }
         }
 
+        // --------------------------------------- SELECCION DE PRODUCTO PARA EDITAR
         $("#tabla tbody").on("click", '.btn-editar', function () {
             selectRow = $(this).closest("tr");
             var data = tabladata.row(selectRow).data();
             AbrirModel(data);
         })
 
+        // --------------------------------------- SELECCION DE PRODUCTO PARA ELIMINAR
+        $("#tabla tbody").on("click", '.btn-eliminar', function () 
+        {
+            selectRow = $(this).closest("tr");
+            var data = tabladata.row(selectRow).data();
 
-        async function Guardar() {
+            swal({
+                title: "Estas Seguro?",
+                text: "Desea eliminar este Producto?",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonClass: "btn-primary",
+                confirmButtonText: "Eliminar",
+                cancelButtonText: "Cancelar",
+                closeOnConfirm: false
+            },
+                function () {
+                    jQuery.ajax({
+                        url: '@Url.Action("EliminarProducto", "Mantenimiento")',
+                        type: "DELETE",
+                        data: data,
+                        dataType: "json",
+                        success: function (data) {
+                            if (data.resultado) {
+                                swal("Producto Eliminado!", "tu Producto ha sido eliminado.", "success");
+                                tabladata.row(selectRow).remove().draw(false);
+                            }
+                            else {
+                                swal("No se pudo eliminar!", data.mensaje, "error");
+                            }
+                        },
+                        error: function (error) {
+                            $("#mensajeError").text("Error Ajax");
+                            $("#mensajeError").show();
+                        }
+                    });
+                });
+        })
+
+
+        // --------------------------------------- SELECCION DE VARIANTE DE PRODUCTO
+        $("#tabla tbody").on("click", '.btn-varianteProducto', function () {
+            selectRow = $(this).closest("tr");
+            var data = tabladata ? tabladata.row(selectRow).data() : null;
+
+            console.log("boton tocado");
+            console.log(data);
+
+            // Obtener la posición de la segunda tabla
+            var destino = $("#CardVariantes").offset().top;
+
+            // Realizar la animación de desplazamiento suave
+            $("html, body").animate({ scrollTop: destino }, 800); // 800 ms para la animación
+
+            // --------------------------------------- DESTRUIR LA TABLA ANTES DE CREAR UNA NUEVA
+            if ($.fn.DataTable.isDataTable('#tablaVariante')) {
+                $('#tablaVariante').DataTable().destroy();
+            }
+
+            // --------------------------------------- CREACION DE DATATABLE DE LISTAR VARIANTES DE PRODUCTOS
+            tablaVariantedata = $("#tablaVariante").DataTable({
+                "ajax": {
+                    url: '@Url.Action("ListarVarianteProductoById", "Mantenimiento")',
+                    type: "GET",
+                    data: data,
+                    dataType: "json",
+                },
+                "columns": [
+                    { "data": "Producto" },
+                    { "data": "Gramos" },
+                    { "data": "Precio" },
+                    { "data": "Stock" },
+                    {
+                        "data": "Activo", "width": "30px", "render": function (value) {
+                            if (value) {
+                                return '<span class="badge bg-success">SI</span>'
+                            } else {
+                                return '<span class="badge bg-danger">NO</span>'
+                            }
+                        }
+                    },
+                    {
+                        "defaultContent":
+                            '<button type="button" class="btn btn-primary btn-sm btn-editar"><i class="fas fa-pen"></i></button>' +
+                            '<button type button" class="btn btn-danger btn-sm ms-2 btn-eliminar"><i class="fas fa-trash"></i></button>',
+                        "orderable": false,
+                        "searchable": false,
+                        "width": "80px",
+                    }
+                ],
+                "language": {
+                    "url": "https://cdn.datatables.net/plug-ins/1.11.3/i18n/es_es.json"
+                }
+            });
+        });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        // --------------------------------------- GUARDAR DATOS PRODUCTO
+        async function Guardar()
+        {
             var data = new FormData();
             data.append("formFile", $("#uploadFile")[0].files[0]);
+            data.append("IdProducto", $("#txtId").val());
             data.append("Nombre", $("#txtNombre").val());
             data.append("Descripcion", $("#txtDescripcion").val());
             data.append("IdMarca", $("#cboMarca").val());
@@ -283,8 +443,8 @@
             };
 
 
-            try {
-                // Realiza una solicitud AJAX asincrónica utilizando await
+            try 
+            {
                 const response = await $.ajax({
                     type: "POST",
                     url: '@Url.Action("GuardarProducto", "Mantenimiento")',
@@ -302,7 +462,7 @@
 
                 $(".modal-body").LoadingOverlay("hide");
 
-                if (Producto.IdProducto == 0) // PRODUCTO NUEVO
+                if (Producto.IdProducto == 0) // CREACION DE PRODUCTO
                 {
                     if (response.operacionOk) {
                         Producto.IdProducto = response.idGenerado;
@@ -326,7 +486,8 @@
                         $("#mensajeError").show();
                     }
                 }
-            } catch (error) {
+            } catch (error)
+            {
                 $(".modal-body").LoadingOverlay("hide");
                 $("#mensajeError").text("Error Ajax");
                 $("#mensajeError").show();

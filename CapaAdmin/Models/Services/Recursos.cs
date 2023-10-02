@@ -9,7 +9,7 @@ namespace CapaAdmin.Models.Services
 {
     public class Recursos :IRecursos
     {
-
+        #region USUARIO
         // Encriptacion de password
         public string GetSHA2S6(string str)
         {
@@ -59,7 +59,9 @@ namespace CapaAdmin.Models.Services
 
             return result;
         }
+        #endregion
 
+        #region IMAGEN
         public static string ConvertirBase64(string ruta, out bool conversion)
         {
             string textBase64 = string.Empty;
@@ -74,7 +76,6 @@ namespace CapaAdmin.Models.Services
                 }
                 else
                 {
-                    // El archivo no existe, puedes establecer la variable 'conversion' en false o manejar el error de acuerdo a tus necesidades.
                     conversion = false;
                 }
             }
@@ -84,5 +85,6 @@ namespace CapaAdmin.Models.Services
             }
             return textBase64;
         }
+        #endregion
     }
 }

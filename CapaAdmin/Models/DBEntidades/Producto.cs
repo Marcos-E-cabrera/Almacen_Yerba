@@ -29,8 +29,4 @@ public partial class Producto
     public virtual Marca? IdMarcaNavigation { get; set; }
 
     public virtual ICollection<VarianteProducto> VarianteProductos { get; set; } = new List<VarianteProducto>();
-
-
-    [NotMapped] // usare NotMapped para saber si se cargo la img o no
-    public IFormFile? File { get; set; }
 }

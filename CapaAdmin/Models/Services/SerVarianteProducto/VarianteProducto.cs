@@ -31,5 +31,16 @@ namespace CapaAdmin.Models.Services.SerVarianteProducto
                 return new List<DBEntidades.VarianteProducto>();
             }
         }
+
+        public async Task<IEnumerable<DBEntidades.VarianteProducto>> ListarById(int id)
+        {
+            var data = await _context.VarianteProductos
+                .Where( x => x.IdProducto == id)
+                .Include(x => x.IdProductoNavigation)
+                .ToListAsync();
+
+            return data;
+        }
+
     }
 }

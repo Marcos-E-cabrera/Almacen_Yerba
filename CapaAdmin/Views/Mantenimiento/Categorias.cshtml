@@ -9,6 +9,7 @@
     <li class="breadcrumb-item active">Categoria</li>
 </ol>
 
+<!-- CARD -->
 <div class="card">
 
     <div class="card-header">
@@ -39,8 +40,7 @@
     </div>
 </div>
 
-
-<!-- Modal -->
+<!-- MODAL -->
 <div class="modal fade" id="FormModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -88,9 +88,11 @@
 @section scripts
 {
     <script>
+
         var tabladata;
         var selectRow;
 
+        // --------------------------------------- CREACION DE DATATABLE DE LISTAR CATEGORIA
         tabladata = $("#tabla").DataTable({
             "ajax": {
                 url: '@Url.Action("ListarCategoria", "Mantenimiento")',
@@ -123,7 +125,9 @@
             },
         });
 
-        function AbrirModel(json) {
+        // --------------------------------------- MODAL PARA MOSTRAR INFORMACION
+        function AbrirModel(json)
+        {
             $("#txtId").val(0);
             $("#txtDescripcion").val("");
             $("#cboActivo").val(1);
@@ -139,54 +143,9 @@
             $("#FormModal").modal("show");
         }
 
-
-
-        $("#tabla tbody").on("click", '.btn-editar', function () {
-            selectRow = $(this).closest("tr");
-            var data = tabladata.row(selectRow).data();
-            AbrirModel(data);
-        })
-
-        $("#tabla tbody").on("click", '.btn-eliminar', function () {
-            selectRow = $(this).closest("tr");
-            var data = tabladata.row(selectRow).data();
-
-            swal({
-                title: "Estas Seguro?",
-                text: "Desea eliminar esta Categoria?",
-                type: "warning",
-                showCancelButton: true,
-                confirmButtonClass: "btn-primary",
-                confirmButtonText: "Eliminar",
-                cancelButtonText: "Cancelar",
-                closeOnConfirm: false
-            },
-                function () {
-                    jQuery.ajax({
-                        url: '@Url.Action("EliminarCategoria", "Mantenimiento")',
-                        type: "DELETE",
-                        data: data,
-                        dataType: "json",
-                        success: function (data) {
-                            debugger;
-                            if (data.resultado) {
-                                swal("Categoria Eliminada!", "tu Categoria ha sido eliminada.", "success");
-                                tabladata.row(selectRow).remove().draw(false);
-                            }
-                            else {
-                                swal("No se pudo eliminar!", data.mensaje, "error");
-                            }
-                        },
-                        error: function (error) {
-                            $("#mensajeError").text("Error Ajax");
-                            $("#mensajeError").show();
-                        }
-                    });
-                });
-        })
-
-
-        function Guardar() {
+        // --------------------------------------- GUARDAR DATOS CATEGORIA
+        function Guardar() 
+        {
             var Categoria = {
                 IdCategoria: $("#txtId").val(),
                 Descripcion: $("#txtDescripcion").val(),
@@ -202,7 +161,7 @@
 
                     $(".modal-body").LoadingOverlay("hide");
 
-                    if (Categoria.IdCategoria == 0) // CATEGORIA NUEVO
+                    if (Categoria.IdCategoria == 0) // CREACION DE CATEGORIA
                     {
                         if (data.resultado != 0) {
                             Categoria.IdCategoria = data.resultado;
@@ -243,8 +202,53 @@
 
         }
 
+        // --------------------------------------- SELECCION DE CATGORIA PARA EDITAR
+        $("#tabla tbody").on("click", '.btn-editar', function ()
+        {
+            selectRow = $(this).closest("tr");
+            var data = tabladata.row(selectRow).data();
+            AbrirModel(data);
+        })
 
+        // --------------------------------------- SELECCION DE CATGORIA PARA ELIMINAR
+        $("#tabla tbody").on("click", '.btn-eliminar', function () 
+        {
+            selectRow = $(this).closest("tr");
+            var data = tabladata.row(selectRow).data();
 
+            swal({
+                title: "Estas Seguro?",
+                text: "Desea eliminar esta Categoria?",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonClass: "btn-primary",
+                confirmButtonText: "Eliminar",
+                cancelButtonText: "Cancelar",
+                closeOnConfirm: false
+            },
+                function () {
+                    jQuery.ajax({
+                        url: '@Url.Action("EliminarCategoria", "Mantenimiento")',
+                        type: "DELETE",
+                        data: data,
+                        dataType: "json",
+                        success: function (data) {
+                            debugger;
+                            if (data.resultado) {
+                                swal("Categoria Eliminada!", "tu Categoria ha sido eliminada.", "success");
+                                tabladata.row(selectRow).remove().draw(false);
+                            }
+                            else {
+                                swal("No se pudo eliminar!", data.mensaje, "error");
+                            }
+                        },
+                        error: function (error) {
+                            $("#mensajeError").text("Error Ajax");
+                            $("#mensajeError").show();
+                        }
+                    });
+                });
+        })
 
     </script>
 }

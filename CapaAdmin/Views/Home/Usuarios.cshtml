@@ -10,6 +10,7 @@
     <li class="breadcrumb-item active">Usuario</li>
 </ol>
 
+<!-- CARD -->
 <div class="card">
 
     <div class="card-header">
@@ -43,8 +44,7 @@
     </div>
 </div>
 
-
-<!-- Modal -->
+<!-- MODAL -->
 <div class="modal fade" id="FormModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -98,9 +98,11 @@
 @section scripts
 {
     <script>
+
         var tabladata;
         var selectRow;
-        
+
+        // --------------------------------------- CREACION DE DATATABLE DE LISTAR USUARIOS
         tabladata = $("#tabla").DataTable({
             "ajax": {
                 url: '@Url.Action("ListarUsuarios", "Home")',
@@ -135,8 +137,10 @@
             },
         });
 
+        // --------------------------------------- MODAL PARA MOSTRAR INFORMACION 
         function AbrirModel(json)
         {
+            // se mostrara todo vacio si el json es null
             $("#txtId").val(0);
             $("#txtNombre").val("");
             $("#txtApellido").val("");
@@ -145,7 +149,7 @@
 
             $("#mensajeError").hide();
 
-            if( json != null )
+            if (json != null) // si el json tiene datos se mostraran el las casillas
             {
                 $("#txtId").val(json.IdUsuario);
                 $("#txtNombre").val(json.Nombre);
@@ -157,8 +161,7 @@
             $("#FormModal").modal("show");
         }
 
-       
-
+        // --------------------------------------- SELECCION DE USUARIO PARA EDITAR
         $("#tabla tbody").on("click", '.btn-editar', function () 
         {
             selectRow = $(this).closest("tr");
@@ -166,7 +169,9 @@
             AbrirModel(data);
         })
 
-        $("#tabla tbody").on("click", '.btn-eliminar', function () {
+        // --------------------------------------- SELECCION DE USUARIO PARA ELIMINAR
+        $("#tabla tbody").on("click", '.btn-eliminar', function () 
+        {
             selectRow = $(this).closest("tr");
             var data = tabladata.row(selectRow).data();
 
@@ -189,8 +194,8 @@
                     dataType: "json",
                     success: function (data)
                     {
-                        debugger;
-                        if (data.resultado) {
+                        if (data.resultado) 
+                        {
                             swal("Usuario Eliminado!", "tu usuario ha sido eliminado.", "success");
                             tabladata.row(selectRow).remove().draw(false);
                         }
@@ -208,7 +213,7 @@
             });
         })
 
-
+        // --------------------------------------- GUARDAR DATOS USUARIO
         function Guardar() 
         {
             var Usuario = {
@@ -228,7 +233,7 @@
 
                     $(".modal-body").LoadingOverlay("hide");
 
-                    if (Usuario.IdUsuario == 0) // USUARIO NUEVO
+                    if (Usuario.IdUsuario == 0) // CREACION DE USUARIO
                     {
                         if (data.resultado != 0) 
                         {
@@ -271,9 +276,6 @@
             });
 
         }
-
-
-        
 
     </script>
 }
