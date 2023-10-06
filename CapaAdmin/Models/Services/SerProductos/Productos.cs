@@ -90,7 +90,7 @@ namespace CapaAdmin.Models.Services.SerProductos
 
             try
             {
-                var paramId = new SqlParameter("@IdProducto", id);
+                var paramId = new SqlParameter("@IdVariante", id);
 
                 var paramMensaje = new SqlParameter("@Mensaje", SqlDbType.NVarChar, 500);
                 paramMensaje.Direction = ParameterDirection.Output;
@@ -98,7 +98,7 @@ namespace CapaAdmin.Models.Services.SerProductos
                 var paramResultado = new SqlParameter("@Resultado", SqlDbType.Bit);
                 paramResultado.Direction = ParameterDirection.Output;
 
-                var query = "EXEC sp_EliminarProducto @IdProducto, @Mensaje OUTPUT, @Resultado OUTPUT";
+                var query = "EXEC sp_EliminarVarianteProducto @IdVariante, @Mensaje OUTPUT, @Resultado OUTPUT";
                 _context.Database.ExecuteSqlRaw(query, paramId, paramMensaje, paramResultado);
 
                 resultado = (bool)paramResultado.Value;

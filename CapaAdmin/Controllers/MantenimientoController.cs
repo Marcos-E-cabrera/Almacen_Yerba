@@ -38,7 +38,6 @@ namespace CapaAdmin.Controllers
         #endregion
 
         // ---------------------------- CATEGORIA ----------------------------
-
         public IActionResult Categorias()
         {
             return View();
@@ -102,7 +101,6 @@ namespace CapaAdmin.Controllers
         #endregion
 
         // ---------------------------- MARCAS ----------------------------
-
         public IActionResult Marcas()
         {
             return View();
@@ -165,8 +163,7 @@ namespace CapaAdmin.Controllers
 
         #endregion
 
-        // ---------------------------- PRODUCTOS ----------------------------
-
+        // ---------------------------- PRODUCTOS ---------------------------
         public IActionResult Productos()
         {
             return View();
@@ -309,7 +306,6 @@ namespace CapaAdmin.Controllers
         #endregion
 
         // ---------------------------- VARIANTE DE PRODUCTO ----------------------------
-
         public IActionResult Variantes()
         {
             return View();
@@ -317,18 +313,21 @@ namespace CapaAdmin.Controllers
 
         #region METODOS VARIANTE
 
+        #region LISTAR
         [HttpGet]
         public async Task<IActionResult> ListarVarianteProducto()
         {
             var oVarianteProducto = await _contextVarianteProducto.Listar();
             var VarianteProductoData = oVarianteProducto.Select(p => new
             {
+                IdVariante = p.IdVariante,
+                IdProducto = p.IdProducto,
                 Producto = p.IdProductoNavigation != null ? p.IdProductoNavigation.Nombre:null,
                 Gramos = p.Gramos,
                 Precio = p.Precio,
                 Stock = p.Stock,
                 Activo = p.Activo,
-            });
+            });;
             var jsonResult = JsonConvert.SerializeObject(new { data = VarianteProductoData }, Formatting.Indented);
 
             return Content(jsonResult, "application/json");
@@ -340,6 +339,8 @@ namespace CapaAdmin.Controllers
             var oVarianteProducto = await _contextVarianteProducto.ListarById(data.IdProducto);
             var VarianteProductoData = oVarianteProducto.Select(p => new
             {
+                IdVariante = p.IdVariante,
+                IdProducto = p.IdProducto,
                 Producto = p.IdProductoNavigation != null ? p.IdProductoNavigation.Nombre : null,
                 Gramos = p.Gramos,
                 Precio = p.Precio,
@@ -351,6 +352,48 @@ namespace CapaAdmin.Controllers
 
             return Content(jsonResult, "application/json");
         }
+        #endregion
+
+        #region GUARDAR
+        [HttpPost]
+        public async Task<IActionResult> GuardarVarianteProducto(Models.DBEntidades.VarianteProducto Variante)
+        {
+            object resultado;
+            string mensaje = string.Empty;
+
+            if (Variante.IdVariante == 0)
+            {
+                resultado = _contextVarianteProducto.Registrar(Variante, out mensaje);
+            }
+            else
+            {
+                resultado = _contextVarianteProducto.Editar(Variante, out mensaje);
+            }
+
+            var jsonResult = JsonConvert.SerializeObject(new { resultado = resultado, mensaje = mensaje }, Formatting.Indented);
+
+            return Content(jsonResult, "application/json");
+        }
+        #endregion
+
+        #region ELIMINAR 
+        [HttpDelete]
+        public IActionResult EliminarVarianteProducto(Models.DBEntidades.VarianteProducto objeto)
+        {
+            bool resultado = false;
+            string mensaje = string.Empty;
+
+            if (objeto.IdVariante != 0)
+            {
+                resultado = _contextProducto.Delete(objeto.IdVariante, out mensaje);
+            }
+
+            var jsonResult = JsonConvert.SerializeObject(new { resultado = resultado, mensaje = mensaje }, Formatting.Indented);
+
+            return Content(jsonResult, "application/json");
+        }
+        #endregion
+
         #endregion
     }
 }
